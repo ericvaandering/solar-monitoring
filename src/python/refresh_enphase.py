@@ -40,5 +40,3 @@ data = res.read()
 
 with open('/var/lib/enphase/systems.json', 'w') as systems_file:
     systems_file.write(data.decode("utf-8"))
-
-time.sleep(600)
