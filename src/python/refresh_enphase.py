@@ -7,7 +7,7 @@ import os
 import time
 
 api_key = os.environ['API_KEY']
-connect = os.environ['AUTH_CREDENTIALS']
+connect = os.environ['AUTH_CREDENTIALS'].encode(encoding="utf-8")
 auth = base64.b64encode(connect).decode("utf-8")
 
 # Refresh token
