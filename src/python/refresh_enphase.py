@@ -4,6 +4,7 @@ import base64
 import http.client
 import json
 import os
+import time
 
 api_key = os.environ['API_KEY']
 connect = os.environ['AUTH_CREDENTIALS']
@@ -39,3 +40,5 @@ data = res.read()
 
 with open('/var/lib/enphase/systems.json', 'w') as systems_file:
     systems_file.write(data.decode("utf-8"))
+
+time.sleep(600)
