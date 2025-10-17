@@ -1,5 +1,5 @@
 #! /bin/bash
 
-cd ~/solar-monitoring/
-docker build . -f containers/Enphase/Containerfile -t ericvaandering/solar-monitoring:0.0.1
-docker push ericvaandering/solar-monitoring:0.0.1
+#cd ~/solar-monitoring/
+podman build . -f containers/Enphase/Containerfile -t ericvaandering/solar-monitoring:0.0.1
+podman push ericvaandering/solar-monitoring:0.0.1
