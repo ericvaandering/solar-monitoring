@@ -8,3 +8,5 @@ json_text = json.dumps({'time': time.time(),
 
 with open('/var/lib/enphase/test_token.json', 'w') as test_token:
     test_token.write(json_text)
+
+time.sleep(600)
