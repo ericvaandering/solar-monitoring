@@ -1,5 +1,5 @@
 FROM python:3.13.9-alpine3.22
 
-ADD src/python/refresh_test.py /
+ADD src/python/refresh_enphase.py /
 
-ENTRYPOINT /refresh_test.py
+ENTRYPOINT /refresh_enphase.py
