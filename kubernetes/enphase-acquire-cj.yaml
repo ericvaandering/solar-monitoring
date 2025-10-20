@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: solar-monitoring
+  name: enphase-acquire
+spec:
+  schedule: "0 0 * * *"  # Every 24 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: enphase-acquire
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: enphase-acquire
+              image: ericvaandering/solar-monitoring:0.0.2
+              imagePullPolicy: Always
+              command:
+                - /bin/sh
+                - -c
+                - sleep
+                - 86300 # 100 seconds less than a day
+              volumeMounts:
+                - name: enphase-data
+                  mountPath: /var/lib/enphase
+              env:
+              - name: API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    key: enphase_api_key
+                    name: enphase-secrets
+              - name: AUTH_CREDENTIALS
+                valueFrom:
+                  secretKeyRef:
+                    key: enphase_credentials
+                    name: enphase-secrets
+          volumes:
+            - name: enphase-data
+              persistentVolumeClaim:
+                claimName: enphase-pvc
