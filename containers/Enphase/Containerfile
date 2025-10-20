@@ -1,5 +1,6 @@
 FROM python:3.13.9-alpine3.22
 
 ADD src/python/refresh_enphase.py /
+ADD src/python/use_enphase.py /
 
 ENTRYPOINT /refresh_enphase.py
