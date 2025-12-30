@@ -4,10 +4,9 @@ metadata:
   name: enphase-pvc
   namespace: solar-monitoring
 spec:
+  storageClassName: cinder-standard
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
-  storageClassName: oci-bv
-
+      storage: 2Gi

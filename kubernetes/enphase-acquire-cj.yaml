@@ -4,7 +4,7 @@ metadata:
   namespace: solar-monitoring
   name: enphase-acquire
 spec:
-  schedule: "0 0 * * *"  # Every 24 hours
+  schedule: "*/10 * * * *"  # Every 24 hours
   jobTemplate:
     spec:
       template:
@@ -20,8 +20,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - sleep
-                - 86300 # 100 seconds less than a day
+                - sleep 500 # 100 seconds less than a day
               volumeMounts:
                 - name: enphase-data
                   mountPath: /var/lib/enphase

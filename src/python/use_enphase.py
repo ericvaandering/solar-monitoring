@@ -33,6 +33,7 @@ data = res.read()
 result = json.loads(data.decode("utf-8"))
 pprint.pprint(result)
 
+start_time = int((datetime.datetime.now()-datetime.timedelta(days=1)).timestamp())
 conn.request("GET", f"/api/v4/systems/{system_id}/telemetry/consumption_meter?key={api_key}&start_at={start_time}&granularity=day", payload, headers)
 res = conn.getresponse()
 data = res.read()

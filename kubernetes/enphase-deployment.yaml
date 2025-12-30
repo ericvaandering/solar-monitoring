@@ -15,13 +15,24 @@ spec:
     spec:
       containers:
         - name: enphase-test
-          image: ericvaandering/solar-monitoring:0.0.1
+          image: ericvaandering/solar-monitoring:0.0.2
           imagePullPolicy: Always
-#          ports:
-#            - containerPort: 80
           volumeMounts:
             - name: enphase-data
               mountPath: /var/lib/enphase
+          command: ["sleep"]
+          args: ["3600"]
+          env:
+              - name: API_KEY
+                valueFrom:
+                  secretKeyRef:
+                    key: enphase_api_key
+                    name: enphase-secrets
+              - name: AUTH_CREDENTIALS
+                valueFrom:
+                  secretKeyRef:
+                    key: enphase_credentials
+                    name: enphase-secrets
       volumes:
         - name: enphase-data
           persistentVolumeClaim:

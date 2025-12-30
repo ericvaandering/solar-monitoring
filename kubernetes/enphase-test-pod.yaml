@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app.kubernetes.io/name: enphase-test
+    pod-template-hash: 5dffcff98c
+  name: enphase-test-pod
+  namespace: solar-monitoring
+spec:
+  containers:
+  - args:
+    - "3600"
+    command:
+    - sleep
+    env:
+    - name: API_KEY
+      valueFrom:
+        secretKeyRef:
+          key: enphase_api_key
+          name: enphase-secrets
+    - name: AUTH_CREDENTIALS
+      valueFrom:
+        secretKeyRef:
+          key: enphase_credentials
+          name: enphase-secrets
+    image: ericvaandering/solar-monitoring:0.0.2
+    imagePullPolicy: Always
+    name: enphase-test
+    volumeMounts:
+    - mountPath: /var/lib/enphase
+      name: enphase-data
+  volumes:
+  - name: enphase-data
+    persistentVolumeClaim:
+      claimName: enphase-pvc
