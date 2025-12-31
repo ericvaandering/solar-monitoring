@@ -7,12 +7,12 @@ import os
 import pprint
 import time
 
-with open('auth_tokens.json', 'r') as token_file:
+with open('/var/lib/enphase/auth_tokens.json', 'r') as token_file:
   tokens = json.load(token_file)
 access_token = tokens['access_token']
 api_key = os.environ['API_KEY']
 
-with open('systems.json', 'r') as systems_file:
+with open('/var/lib/enphase/systems.json', 'r') as systems_file:
   systems = json.load(systems_file)
 
 system_id = systems['systems'][0]['system_id']

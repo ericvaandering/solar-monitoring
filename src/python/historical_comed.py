@@ -6,7 +6,7 @@ import json
 import os
 import time
 
-dt = datetime.datetime(2025, 5, 18, 0, 0, 0)
+dt = datetime.datetime(2025, 10, 15, 0, 0, 0)
 start_time = dt
 
 while start_time.timestamp() < time.time():
@@ -58,7 +58,7 @@ while start_time.timestamp() < time.time():
 
 
     #date_string = time.strftime('%Y-%m-%d', time.gmtime(start_ts))
-    with open(file=f'{year}-{month:02d}-{day:02d}_comed.json', mode='w') as day_file:
+    with open(file=f'/var/lib/enphase/{year}-{month:02d}-{day:02d}_comed.json', mode='w') as day_file:
          json.dump(price_data, day_file)
     print(f'Data for {year}-{month:02d}-{day:02d} written')
     start_time = start_time + datetime.timedelta(days=1)

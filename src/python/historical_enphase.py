@@ -6,15 +6,15 @@ import json
 import os
 import time
 
-dt = datetime.datetime(2025, 8, 25, 0, 0, 0)
+dt = datetime.datetime(2025, 10, 15, 0, 0, 0)
 start_time = dt
 
-with open('auth_tokens.json', 'r') as token_file:
+with open('/var/lib/enphase/auth_tokens.json', 'r') as token_file:
     tokens = json.load(token_file)
 access_token = tokens['access_token']
 api_key = os.environ['API_KEY']
 
-with open('systems.json', 'r') as systems_file:
+with open('/var/lib/enphase/systems.json', 'r') as systems_file:
     systems = json.load(systems_file)
 
 system_id = systems['systems'][0]['system_id']
@@ -68,7 +68,7 @@ while start_time.timestamp() < time.time():
             solar_data[interval_end].update({'wh_consumed': power})
 
     date_string = time.strftime('%Y-%m-%d', time.gmtime(start_ts))
-    with open(file=date_string + '.json', mode='w') as day_file:
+    with open(file='/var/lib/enphase/' + date_string + '.json', mode='w') as day_file:
         json.dump(solar_data, day_file)
     print(f'Data for {date_string} written')
     start_time = start_time + datetime.timedelta(days=1)
