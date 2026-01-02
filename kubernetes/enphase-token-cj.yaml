@@ -15,7 +15,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: enphase-refresh-token
-              image: ericvaandering/solar-monitoring:0.0.2
+              image: ericvaandering/solar-monitoring:0.1.0
               imagePullPolicy: Always
               volumeMounts:
                 - name: enphase-data
