@@ -22,6 +22,7 @@ payload = ''
 headers = {'Authorization': f'Basic {auth}'}
 conn.request("POST", f"/oauth/token?grant_type=refresh_token&refresh_token={refresh_token}", payload, headers)
 res = conn.getresponse()
+print(res.status)
 data = res.read()
 
 with open('/var/lib/enphase/auth_tokens.json', 'w') as token_file:
