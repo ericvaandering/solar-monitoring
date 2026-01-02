@@ -4,7 +4,7 @@ metadata:
   namespace: solar-monitoring
   name: enphase-acquire
 spec:
-  schedule: "*/10 * * * *"  # Every 24 hours
+  schedule: "20 */4 * * *"  # Every 4 hours
   jobTemplate:
     spec:
       template:
@@ -15,12 +15,12 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: enphase-acquire
-              image: ericvaandering/solar-monitoring:0.0.2
+              image: ericvaandering/solar-monitoring:0.2.0
               imagePullPolicy: Always
               command:
                 - /bin/sh
                 - -c
-                - sleep 500 # 100 seconds less than a day
+                - /historical.sh
               volumeMounts:
                 - name: enphase-data
                   mountPath: /var/lib/enphase

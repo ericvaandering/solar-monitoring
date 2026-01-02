@@ -4,9 +4,13 @@ import datetime
 import http.client
 import json
 import os
+import sys
 import time
 
-dt = datetime.datetime(2025, 10, 15, 0, 0, 0)
+DAYS_AGO = 4
+
+days_ago = datetime.datetime.now() + datetime.timedelta(days=-DAYS_AGO)
+dt = datetime.datetime(days_ago.year, days_ago.month, days_ago.day, 0, 0, 0)
 start_time = dt
 
 with open('/var/lib/enphase/auth_tokens.json', 'r') as token_file:
@@ -36,9 +40,12 @@ while start_time.timestamp() < time.time():
     try:
         res = conn.getresponse()
     except:
-        breakpoint()
-    data = res.read()
+        sys.exit()
 
+    if res.status != 200:
+        sys.exit()
+
+    data = res.read()
     result = json.loads(data.decode("utf-8"))
 
     for readout in result['intervals']:
@@ -55,10 +62,14 @@ while start_time.timestamp() < time.time():
     try:
         res = conn.getresponse()
     except:
-        breakpoint()
-    data = res.read()
+        sys.exit()
 
+    if res.status != 200:
+        sys.exit()
+
+    data = res.read()
     result = json.loads(data.decode("utf-8"))
+
     for readout in result['intervals']:
         interval_end = str(readout['end_at'])
         power = readout['enwh']
@@ -70,6 +81,6 @@ while start_time.timestamp() < time.time():
     date_string = time.strftime('%Y-%m-%d', time.gmtime(start_ts))
     with open(file='/var/lib/enphase/' + date_string + '.json', mode='w') as day_file:
         json.dump(solar_data, day_file)
-    print(f'Data for {date_string} written')
+    print(f'Enphase data for {date_string} written')
     start_time = start_time + datetime.timedelta(days=1)
     time.sleep(60)

@@ -4,9 +4,13 @@ import datetime
 import http.client
 import json
 import os
+import sys
 import time
 
-dt = datetime.datetime(2025, 10, 15, 0, 0, 0)
+DAYS_AGO = 4
+
+days_ago = datetime.datetime.now() + datetime.timedelta(days=-DAYS_AGO)
+dt = datetime.datetime(days_ago.year, days_ago.month, days_ago.day, 0, 0, 0)
 start_time = dt
 
 while start_time.timestamp() < time.time():
@@ -17,7 +21,6 @@ while start_time.timestamp() < time.time():
 
 
  # Returns list of [{"millisUTC":"1434686700000","price":"2.0"}
-    # start_time = int((datetime.datetime.now()-datetime.timedelta(days=6)).timestamp())
     end_ts = int((start_time + datetime.timedelta(days=1)).timestamp())
     start_ts = int(start_time.timestamp())
     (year, month, day, _, _, _, _, _, _) = start_time.timetuple()
@@ -29,9 +32,11 @@ while start_time.timestamp() < time.time():
     try:
         res = conn.getresponse()
     except:
-        breakpoint()
-    data = res.read()
+        sys.exit()
+    if res.status != 200:
+        sys.exit()
 
+    data = res.read()
     result = json.loads(data.decode("utf-8"))
 
     sum_15 = 0
@@ -60,6 +65,6 @@ while start_time.timestamp() < time.time():
     #date_string = time.strftime('%Y-%m-%d', time.gmtime(start_ts))
     with open(file=f'/var/lib/enphase/{year}-{month:02d}-{day:02d}_comed.json', mode='w') as day_file:
          json.dump(price_data, day_file)
-    print(f'Data for {year}-{month:02d}-{day:02d} written')
+    print(f'ComEd data for {year}-{month:02d}-{day:02d} written')
     start_time = start_time + datetime.timedelta(days=1)
     time.sleep(10)

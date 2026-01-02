@@ -1,5 +1,7 @@
 FROM python:3.13.9-alpine3.22
 
+ADD containers/Enphase/historical.sh /
+
 ADD src/python/refresh_enphase.py /
 ADD src/python/use_enphase.py /
 ADD src/python/historical_enphase.py /
