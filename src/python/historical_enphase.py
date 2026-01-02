@@ -7,7 +7,7 @@ import os
 import sys
 import time
 
-DAYS_AGO = 4
+DAYS_AGO = 2
 
 days_ago = datetime.datetime.now() + datetime.timedelta(days=-DAYS_AGO)
 dt = datetime.datetime(days_ago.year, days_ago.month, days_ago.day, 0, 0, 0)
