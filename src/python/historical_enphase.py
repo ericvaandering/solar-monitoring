@@ -32,8 +32,10 @@ while start_time.timestamp() < time.time():
     }
 
     # start_time = int((datetime.datetime.now()-datetime.timedelta(days=6)).timestamp())
-    end_ts = int((start_time + datetime.timedelta(days=1)).timestamp())
+
     start_ts = int(start_time.timestamp())
+    end_ts = int((start_time + datetime.timedelta(days=1)).timestamp())
+    end_ts = min(time.time(), end_ts) # Don't ask for times that haven't happened yet.
 
     conn.request("GET", f"/api/v4/systems/{system_id}/rgm_stats?key={api_key}&start_at={start_ts}&end_at={end_ts}",
                  payload, headers)
