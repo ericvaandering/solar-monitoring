@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: solar-monitoring
+  name: power-analyze
+spec:
+  schedule: "40 */8 * * *"  # Every 8 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: power-analyze
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: power-analyze
+              image: ericvaandering/solar-analysis:0.1.0
+              imagePullPolicy: Always
+              command:
+                - /bin/sh
+                - -c
+                - /entrypoint.sh
+              volumeMounts:
+                - name: enphase-data
+                  mountPath: /var/lib/enphase
+              env:
+              - name: ENPHASE_DATA_DIRECTORY
+                value: /var/lib/enphase/
+              - name: COMED_DATA_DIRECTORY
+                value: /var/lib/enphase/
+          volumes:
+            - name: enphase-data
+              persistentVolumeClaim:
+                claimName: enphase-pvc
