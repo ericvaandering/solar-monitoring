@@ -2,19 +2,20 @@
 import datetime
 import json
 import glob
+import os
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# FIXME: Read all files with the pattern
-# FIXME: Read all comed files
-
+enphase_directory = os.getenv('ENPHASE_DATA_DIRECTORY')
+comed_directory = os.getenv('COMED_DATA_DIRECTORY')
 # Get delivery cost info
 delivery_costs = json.load(open('delivery.json'))
 
 # Read in raw data from Enphase
 py_array = []
-files = glob.glob('????-??-??.json')
+files = glob.glob(enphase_directory+'????-??-??.json')
 for enphase_file in files:
     print(f'Processing {enphase_file}')
     month_enphase = json.load(open(enphase_file))
@@ -24,7 +25,7 @@ enphase_np = np.array(py_array)
 
 # Read in raw data from ComEd
 py_array = []
-files = glob.glob('????-??-??_comed.json')
+files = glob.glob(comed_directory+'????-??-??_comed.json')
 for comed_file in files:
     print(f'Processing {comed_file}')
     month_comed = json.load(open(comed_file))
@@ -70,16 +71,16 @@ print(year_view)
 
 month_view['Generated Cost'].plot(title='Generated Value per Day', ylabel='Dollars', rot=-45)
 plt.tight_layout()
-plt.show()
+plt.savefig('DayValue.pdf',  bbox_inches='tight')
 
-(month_view['Generated'] / 1000).plot(title='Generated Power per Day', ylabel='kWh', rot=-45)
+plt.clf()
+(month_view['Generated'] / 1000).plot(title='Generated Power per Day', ylabel='kWh', xlabel='Date', rot=-45)
 plt.tight_layout()
-plt.show()
+plt.savefig('DayPower.pdf',  bbox_inches='tight')
 
 # Plot the yearly as a bar plot
 
 df_plot = year_view.groupby(['Year', 'Month']).sum()
-print(df_plot)
 
 df_plot.plot(kind='bar', y='Generated Cost', legend=False)
 plt.xlabel('Year and Month')
@@ -87,7 +88,7 @@ plt.ylabel('Generated Value ($)')
 plt.title('Value Generated per Month')
 plt.xticks(rotation=45) # Rotate labels for better readability
 plt.tight_layout() # Adjust layout to prevent clipping of labels
-plt.show()
+plt.savefig('MonthValue.pdf',  bbox_inches='tight')
 
 df_plot['Generated'] = df_plot['Generated'] / 1000
 df_plot.plot(kind='bar', y='Generated', legend=False, rot=45)
@@ -95,4 +96,4 @@ plt.xlabel('Year and Month')
 plt.ylabel('kWh')
 plt.title('kWh Generated per Month')
 plt.tight_layout() # Adjust layout to prevent clipping of labels
-plt.show()
+plt.savefig('MonthPower.pdf',  bbox_inches='tight')
