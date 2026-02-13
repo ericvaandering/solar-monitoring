@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  namespace: solar-monitoring
+  name: emporia-fetch
+spec:
+  schedule: "2 */6 * * *"  # Every 12 hours
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: emporia-fetch
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: enphase-refresh-token
+              image: ericvaandering/emporia-fetch:0.1.0
+              imagePullPolicy: Always
+              volumeMounts:
+                - name: enphase-data
+                  mountPath: /var/lib/enphase
+              env:
+              - name: EMPORIA_USERNAME
+                valueFrom:
+                  secretKeyRef:
+                    key: emp_user
+                    name: solar-secrets
+              - name: EMPORIA_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    key: emp_pass
+                    name: solar-secrets
+          volumes:
+            - name: enphase-data
+              persistentVolumeClaim:
+                claimName: enphase-pvc
