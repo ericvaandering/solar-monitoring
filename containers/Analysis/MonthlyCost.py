@@ -33,10 +33,28 @@ for comed_file in files:
         py_array.append([int(ts), month_comed[ts]])
 comed_np = np.array(py_array)
 
+# Read in RAW data from Emporia
+
+# Do multiples like this
+# dfs = [] # an empty list to store the data frames
+#
+# for file in file_list:
+#     # Use pd.read_json() to read the file.
+#     # If your files are JSON Lines format, use lines=True.
+#     # You may also need to use pd.json_normalize() for nested JSON structures.
+#     data = pd.read_json(file, lines=True)
+#     dfs.append(data) # append the data frame to the list
+#
+# # Concatenate all the data frames in the list into a single DataFrame
+# merged_df = pd.concat(dfs, ignore_index=True)
+
+emporia_df = pd.read_json(comed_directory+'emporia_history.json')
+emporia_df['Timestamp'] = emporia_df['Timestamp'].astype(int)
+
 # Build and merge dataframes based on timestamp
 enphase_df = pd.DataFrame(enphase_np, columns=['Timestamp', 'Consumed', 'Generated'])
 comed_df = pd.DataFrame(comed_np, columns=['Timestamp', 'Supply Price'])
-power = pd.merge(enphase_df, comed_df, on='Timestamp', how='inner')
+power = pd.merge(enphase_df, comed_df, on='Timestamp', how='inner').merge(emporia_df, on='Timestamp', how='inner')
 
 # Add additional time/data columns
 power['Time'] = pd.to_datetime(power['Timestamp'], unit='s')
