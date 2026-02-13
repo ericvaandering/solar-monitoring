@@ -27,7 +27,7 @@ def print_recursive(usage_dict, info, depth=0):
 
 
 vue = pyemvue.PyEmVue()
-vue.login(username=username, password=password, token_storage_file='keys.json')
+vue.login(username=username, password=password, token_storage_file='emporia_keys.json')
 
 devices = vue.get_devices()
 
