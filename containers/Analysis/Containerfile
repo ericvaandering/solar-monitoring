@@ -1,0 +1,9 @@
+FROM python:3.13.9-alpine3.22
+
+RUN pip install pandas numpy matplotlib
+
+ADD containers/Analysis/entrypoint.sh /
+ADD containers/Analysis/MonthlyCost.py /
+ADD containers/Analysis/delivery.json /
+
+ENTRYPOINT /entrypoint.sh
