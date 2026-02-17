@@ -6,9 +6,9 @@ import os
 import pyemvue
 from pyemvue.enums import Scale, Unit
 
-CHUNK = 32
+CHUNK = 8
 OVERLAP = 1
-START = 31
+START = 32
 END = 0
 
 username = os.getenv('EMPORIA_USERNAME')
