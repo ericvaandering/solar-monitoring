@@ -71,6 +71,7 @@ power2.set_index('Time', inplace=True)
 
 # Add delivery cost info to table
 power = power.assign(Delivery=0.065)  # Default value FIXME: make it an average
+power2 = power2.assign(Delivery=0.065)  # Default value FIXME: make it an average
 for bill in delivery_costs:
     start = datetime.datetime.fromisoformat(bill['start']).date()
     end = datetime.datetime.fromisoformat(bill['end']).date()
@@ -84,8 +85,11 @@ for bill in delivery_costs:
 # Prices are in cents/kWh, values are in Wh (or watts?)
 power['Generated Cost'] = (power['Delivery'] + power['Supply Price'] / 100) * power['Generated'] / 1000
 power['Consumed Cost'] = (power['Delivery'] + power['Supply Price'] / 100) * power['Consumed'] / 1000
+power['EV Cost'] = (power['Delivery'] + power['Supply Price'] / 100) * power['EV Charger'] / 1000
 power2['Generated Cost'] = (power2['Delivery'] + power2['Supply Price'] / 100) * power2['Generated'] / 1000
 power2['Consumed Cost'] = (power2['Delivery'] + power2['Supply Price'] / 100) * power2['Consumed'] / 1000
+power2['EV Cost'] = (power2['Delivery'] + power2['Supply Price'] / 100) * power2['EV Charger'] / 1000
+
 print(power)
 print(power['Generated Cost'].sum())
 print(power2['Generated Cost'].sum())

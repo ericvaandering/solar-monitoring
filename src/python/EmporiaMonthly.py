@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#! /usr/bin/env python3
 import datetime
 import json
 import os
@@ -6,10 +6,10 @@ import os
 import pyemvue
 from pyemvue.enums import Scale, Unit
 
-CHUNK = 30
+CHUNK = 32
 OVERLAP = 1
-START = 720
-END = 20
+START = 31
+END = 0
 
 username = os.getenv('EMPORIA_USERNAME')
 password = os.getenv('EMPORIA_PASSWORD')
@@ -48,6 +48,8 @@ for days_ago in range(END, START, CHUNK):
         for offset in [0, 900, 1800, 2700]:  # Spread out over 15 minutes to match Enphase data
             frame.append({'Timestamp': timestamp + offset, 'EV Charger': kwh / 4.0 * 1000})
         timestamp += 3600
+year = datetime.datetime.now(datetime.timezone.utc).year
+month = datetime.datetime.now(datetime.timezone.utc).month
 
-with open('emporia_history.json', 'w') as outfile:
+with open(f'{year}-{month:02d}_emporia.json', 'w') as outfile:
     outfile.write(json.dumps(frame))
