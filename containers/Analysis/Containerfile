@@ -4,6 +4,7 @@ RUN pip install pandas numpy matplotlib pyarrow
 
 ADD src/python/ComedAnalysis.py /
 ADD src/python/MakeComEdDataFrame.py /
+ADD src/python/MakeEnphaseDataFrame.py /
 ADD containers/Analysis/entrypoint.sh /
 ADD containers/Analysis/MonthlyCost.py /
 ADD containers/Analysis/delivery.json /
