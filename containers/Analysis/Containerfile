@@ -6,6 +6,8 @@ ADD src/python/ComedAnalysis.py /
 ADD src/python/EnphaseAnalysis.py /
 ADD src/python/MakeComEdDataFrame.py /
 ADD src/python/MakeEnphaseDataFrame.py /
+ADD src/python/MakeEmporiaDataFrame.py /
+
 ADD containers/Analysis/entrypoint.sh /
 ADD containers/Analysis/MonthlyCost.py /
 ADD containers/Analysis/delivery.json /

@@ -5,6 +5,7 @@ cd $COMED_DATA_DIRECTORY
 
 /MakeComEdDataFrame.py
 /MakeEnphaseDataFrame.py
+/MakeEmporiaDataFrame.py
 
 /MonthlyCost.py
 
