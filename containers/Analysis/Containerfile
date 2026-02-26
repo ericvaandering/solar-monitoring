@@ -3,6 +3,7 @@ FROM python:3.13.9-alpine3.22
 RUN pip install pandas numpy matplotlib pyarrow
 
 ADD src/python/ComedAnalysis.py /
+ADD src/python/EnphaseAnalysis.py /
 ADD src/python/MakeComEdDataFrame.py /
 ADD src/python/MakeEnphaseDataFrame.py /
 ADD containers/Analysis/entrypoint.sh /
