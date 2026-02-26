@@ -2,7 +2,7 @@ FROM python:3.13.9-alpine3.22
 
 RUN pip install pandas numpy matplotlib pyarrow
 
-ADD src/python/ComedCost.py /
+ADD src/python/ComedAnalysis.py /
 ADD src/python/MakeComEdDataFrame.py /
 ADD containers/Analysis/entrypoint.sh /
 ADD containers/Analysis/MonthlyCost.py /
