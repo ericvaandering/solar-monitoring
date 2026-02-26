@@ -7,6 +7,10 @@ cd $COMED_DATA_DIRECTORY
 /MakeEnphaseDataFrame.py
 /MakeEmporiaDataFrame.py
 
+/ComedAnalysis.py
+/EnphaseAnalysis.py
+/EmporiaAnalysis.py
+
 /MonthlyCost.py
 
-sleep 3600
+sleep 1800
