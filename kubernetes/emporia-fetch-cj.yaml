@@ -15,7 +15,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: enphase-refresh-token
-              image: ericvaandering/emporia-fetch:0.1.0
+              image: ericvaandering/emporia-fetch:1.0.0
               imagePullPolicy: Always
               volumeMounts:
                 - name: enphase-data
