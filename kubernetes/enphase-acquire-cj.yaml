@@ -15,7 +15,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: enphase-acquire
-              image: ericvaandering/solar-monitoring:0.2.0
+              image: ericvaandering/solar-monitoring:1.0.0
               imagePullPolicy: Always
               command:
                 - /bin/sh
