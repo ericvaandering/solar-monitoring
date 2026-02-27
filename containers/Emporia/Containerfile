@@ -1,0 +1,9 @@
+FROM python:3.13.9-alpine3.22
+
+RUN pip install pyemvue
+
+ADD containers/Emporia/entrypoint.sh /
+ADD src/python/EmporiaHistorical.py /
+ADD src/python/EmporiaMonthly.py /
+
+ENTRYPOINT /entrypoint.sh
