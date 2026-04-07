@@ -9,9 +9,9 @@ ADD src/python/EmporiaAnalysis.py /
 ADD src/python/MakeComEdDataFrame.py /
 ADD src/python/MakeEnphaseDataFrame.py /
 ADD src/python/MakeEmporiaDataFrame.py /
+ADD src/python/MonthlyCost.py /
 
 ADD containers/Analysis/entrypoint.sh /
-ADD containers/Analysis/MonthlyCost.py /
 ADD containers/Analysis/delivery.json /
 
 ENTRYPOINT /entrypoint.sh
