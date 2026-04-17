@@ -4,6 +4,7 @@ import datetime
 import glob
 import json
 import os
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
@@ -13,6 +14,29 @@ local_timezone = 'US/Central'
 comed_directory = os.getenv('COMED_DATA_DIRECTORY')
 # Get delivery cost info supplied as part of the container
 delivery_costs = json.load(open('/delivery.json'))
+
+
+def dtod(start_day, end_day, dtod_prices):
+    prices = []
+    current = start_day
+    while current <= end_day:
+        current += datetime.timedelta(days=1)
+
+        for range, price in dtod_prices.items():
+            start_hour, end_hour = range.split('-')
+            start_time = (datetime.datetime.combine(current, datetime.time(int(start_hour), 0, 0))
+                          + datetime.timedelta(seconds=1))
+            if end_hour == '24':
+                end_time = datetime.datetime.combine(current, datetime.time(23, 59, 59))
+            else:
+                end_time = datetime.datetime.combine(current, datetime.time(int(end_hour), 0, 0))
+
+            start_ts = start_time.replace(tzinfo=ZoneInfo(local_timezone)).timestamp()
+            end_ts = end_time.replace(tzinfo=ZoneInfo(local_timezone)).timestamp()
+            prices.append((int(start_ts), int(end_ts), price))
+
+    return prices
+
 
 data_list = []
 
@@ -43,10 +67,16 @@ comed_df = comed_df.assign(Delivery=0.065)  # Default value FIXME: make it an av
 for bill in delivery_costs:
     start = datetime.datetime.fromisoformat(bill['start']).date()
     end = datetime.datetime.fromisoformat(bill['end']).date()
-    charge = bill['charge']
-    # Fill it in, leaves unchanged if the date does not match
-    comed_df['Delivery'] = np.where((comed_df['Date'] <= end) & (comed_df['Date'] >= start), bill['charge'],
-                                    comed_df['Delivery'])
+    if 'charge' in bill:
+        charge = bill['charge']
+        # Fill it in, leaves unchanged if the date does not match
+        comed_df['Delivery'] = np.where((comed_df['Date'] <= end) & (comed_df['Date'] >= start), charge,
+                                        comed_df['Delivery'])
+    elif 'dtod' in bill:
+        for (start_time, end_time, delivery) in dtod(start, end, bill['dtod']):
+            # Fill it in, leaves unchanged if the timestamp does not match
+            comed_df['Delivery'] = np.where((comed_df['Timestamp'] <= end_time) & (comed_df['Timestamp'] >= start_time),
+                                            delivery, comed_df['Delivery'])
 
 comed_df['Total price'] = comed_df['Delivery'] + comed_df['Supply price']
 
