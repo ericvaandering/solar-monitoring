@@ -12,5 +12,3 @@ cd $COMED_DATA_DIRECTORY
 /EmporiaAnalysis.py
 
 /MonthlyCost.py
-
-sleep 1800
