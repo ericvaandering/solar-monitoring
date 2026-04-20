@@ -80,4 +80,10 @@ for bill in delivery_costs:
 
 comed_df['Total price'] = comed_df['Delivery'] + comed_df['Supply price']
 
+# Split on March 16 when delivery DTOD started
+early_df = comed_df[comed_df['Timestamp'] < 1773622800].copy()
+late_df = comed_df[comed_df['Timestamp'] >= 1773622800].copy()
+
 comed_df.to_feather('comed.ft')
+early_df.to_feather('comed_early.ft')
+late_df.to_feather('comed_late.ft')

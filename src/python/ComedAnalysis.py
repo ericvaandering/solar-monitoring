@@ -8,9 +8,9 @@ comed_directory = os.getenv('COMED_DATA_DIRECTORY')
 
 comed_df = pd.read_feather(comed_directory + '/' + 'comed.ft')
 
-# Split on March 16 when delivery DTOD started
-early_df = comed_df[comed_df['Timestamp'] < 1773622800].copy()
-late_df = comed_df[comed_df['Timestamp'] >= 1773622800].copy()
+# These were split on March 16 when delivery DTOD started
+early_df = pd.read_feather(comed_directory + '/' + 'comed_early.ft')
+late_df = pd.read_feather(comed_directory + '/' + 'comed_late.ft')
 
 tmp_view = comed_df
 tmp_view.drop('Date', axis=1, inplace=True)
