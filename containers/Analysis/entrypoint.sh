@@ -12,3 +12,6 @@ cd $COMED_DATA_DIRECTORY
 /EmporiaAnalysis.py
 
 /MonthlyCost.py
+
+echo "Making TGZ file with all results"
+tar cvfz Analysis.tgz *.pdf *.ft
