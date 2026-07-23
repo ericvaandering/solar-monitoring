@@ -15,7 +15,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: power-analyze
-              image: ericvaandering/solar-analysis:1.1.0
+              image: ericvaandering/solar-analysis:1.1.1
               imagePullPolicy: Always
               command:
                 - /bin/sh
