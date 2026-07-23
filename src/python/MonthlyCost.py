@@ -23,9 +23,11 @@ def set_labels_to_months(plot):
     labels = [item.get_text() for item in ax.get_xticklabels()]
     new_labels = []
     for label in labels:
-        year, month = map(int, label.strip("()").split(","))
-        new_labels.append(datetime.date(year, month, 1).strftime("%b %Y"))
-
+        if label:
+            year, month = map(int, label.strip("()").split(","))
+            new_labels.append(datetime.date(year, month, 1).strftime("%b %Y"))
+        else:
+            new_labels.append('')
     ax.set_xticklabels(new_labels)
     plot.xticks(rotation=45, ha='right', rotation_mode='anchor')  # Rotate labels for better readability
 
@@ -105,3 +107,29 @@ plt.title('EV Cost per Mile by Month')
 set_labels_to_months(plt)
 plt.tight_layout()  # Adjust layout to prevent clipping of labels
 plt.savefig('EVCostPerMile.pdf', bbox_inches='tight')
+
+plt.figure()
+plt.clf()
+good_solar = year_view[year_view['Generated'] > 0]
+
+ax = (100*good_solar['Generated']/(good_solar['Consumed'] - good_solar['EV Charger'])).plot(legend=False)
+avg_value = (100*good_solar['Generated']/(good_solar['Consumed'] - good_solar['EV Charger'])).mean()
+plt.xlabel('Year and Month')
+plt.ylabel('Percentage')
+plt.title('Percentage of house power suppplied by solar')
+ax.axhline(y=avg_value, color='blue', linestyle='--', linewidth=2, label=f'Avg (house only): {avg_value:.1f}%')
+plt.legend()
+set_labels_to_months(plt)
+plt.tight_layout()
+plt.savefig('HousePercent.pdf', bbox_inches='tight')
+
+ax = (100*good_solar['Generated']/good_solar['Consumed']).plot(legend=False)
+avg_value = (100*good_solar['Generated']/good_solar['Consumed']).mean()
+plt.xlabel('Year and Month')
+plt.ylabel('Percentage')
+plt.title('Percentage of total power suppplied by solar')
+ax.axhline(y=avg_value, color='orange', linestyle='--', linewidth=2, label=f'Avg (total): {avg_value:.1f}%')
+plt.legend()
+set_labels_to_months(plt)
+plt.tight_layout()
+plt.savefig('TotalPercent.pdf', bbox_inches='tight')
